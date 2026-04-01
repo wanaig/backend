@@ -2,6 +2,7 @@ package com.naixue.controller;
 
 import com.naixue.common.Result;
 import com.naixue.dto.LoginDTO;
+import com.naixue.dto.UpdateMemberDTO;
 import com.naixue.service.MemberService;
 import com.naixue.vo.LoginVO;
 import com.naixue.vo.MemberInfoVO;
@@ -82,11 +83,8 @@ public class MemberController {
     @PutMapping("/info")
     public Result<Void> updateMemberInfo(
             @RequestAttribute Long memberId,
-            @RequestParam(required = false) String nickname,
-            @RequestParam(required = false) String avatar,
-            @RequestParam(required = false) Integer gender,
-            @RequestParam(required = false) String birthday) {
-        memberService.updateMemberInfo(memberId, nickname, avatar, gender, birthday);
+            @RequestBody UpdateMemberDTO dto) {
+        memberService.updateMemberInfo(memberId, dto);
         return Result.success();
     }
 }

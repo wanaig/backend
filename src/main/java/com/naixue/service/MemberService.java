@@ -1,6 +1,7 @@
 package com.naixue.service;
 
 import com.naixue.dto.LoginDTO;
+import com.naixue.dto.UpdateMemberDTO;
 import com.naixue.vo.LoginVO;
 import com.naixue.vo.MemberInfoVO;
 
@@ -45,5 +46,5 @@ public interface MemberService {
      * @param gender 性别
      * @param birthday 生日
      */
-    void updateMemberInfo(Long memberId, String nickname, String avatar, Integer gender, String birthday);
+    void updateMemberInfo(Long memberId, UpdateMemberDTO dto);
 }

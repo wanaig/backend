@@ -117,6 +117,7 @@ public class OrderServiceImpl implements OrderService {
         order.setGoodsNum(totalNum);
         order.setPostscript(dto.getRemark());
         order.setPayMode("wechat");
+        order.setSortNum("520");
 
         // 保存订单
         orderMapper.insert(order);

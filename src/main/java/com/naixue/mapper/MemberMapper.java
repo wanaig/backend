@@ -63,9 +63,6 @@ public interface MemberMapper {
      * @param member 会员信息(只更新非空字段)
      * @return 影响行数
      */
-    @Update("UPDATE member SET nickname = #{nickname}, avatar = #{avatar}, " +
-            "mobile_phone = #{mobilePhone}, gender = #{gender}, birthday = #{birthday}, " +
-            "updated_at = NOW() WHERE customer_id = #{customerId}")
     int updateById(Member member);
 
     /**

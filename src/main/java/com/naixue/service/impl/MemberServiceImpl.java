@@ -2,6 +2,7 @@ package com.naixue.service.impl;
 
 import com.naixue.common.ResultCode;
 import com.naixue.dto.LoginDTO;
+import com.naixue.dto.UpdateMemberDTO;
 import com.naixue.entity.Member;
 import com.naixue.exception.BusinessException;
 import com.naixue.mapper.MemberMapper;
@@ -16,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 会员服务实现类
@@ -178,15 +182,20 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     @Transactional
-    public void updateMemberInfo(Long memberId, String nickname, String avatar,
-                                 Integer gender, String birthday) {
+    public void updateMemberInfo(Long memberId, UpdateMemberDTO dto) {
         Member member = new Member();
         member.setCustomerId(memberId);
         // 只更新非空字段
-        if (nickname != null) member.setNickname(nickname);
-        if (avatar != null) member.setAvatar(avatar);
-        if (gender != null) member.setGender(gender);
-        if (birthday != null) member.setBirthday(LocalDateTime.parse(birthday));
+        if (dto.getNickname() != null) member.setNickname(dto.getNickname());
+        if (dto.getAvatar() != null) member.setAvatar(dto.getAvatar());
+        if (dto.getGender() != null) member.setGender(dto.getGender());
+        if (dto.getBirthday() != null) {
+            String birthdayStr = dto.getBirthday().replace("T", " ");
+            LocalDateTime birthday = LocalDateTime.parse(birthdayStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            member.setBirthday(birthday);
+            log.info("【会员生日更新】memberId={}, birthday={}", memberId, member.getBirthday());
+        }
+
         memberMapper.updateById(member);
     }
 }
