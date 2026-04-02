@@ -29,9 +29,9 @@ public interface OrderMapper {
      * @return 影响行数
      */
     @Insert("INSERT INTO orders (order_no, member_id, store_id, type_cate, status, " +
-            "total_amount, amount, goods_num, pay_mode, postscript, created_at) " +
+            "total_amount, amount, goods_num, pay_mode, postscript, created_at, sort_num) " +
             "VALUES (#{orderNo}, #{memberId}, #{storeId}, #{typeCate}, #{status}, " +
-            "#{totalAmount}, #{amount}, #{goodsNum}, #{payMode}, #{postscript}, NOW())")
+            "#{totalAmount}, #{amount}, #{goodsNum}, #{payMode}, #{postscript}, #{createdAt}, #{sortNum})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(Order order);
 

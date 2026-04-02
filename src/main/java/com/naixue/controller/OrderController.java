@@ -122,13 +122,16 @@ public class OrderController {
      *
      * @param memberId 会员ID (从JWT Token中解析获取)
      * @param id 订单ID
+     * @param body 支付参数 (包含payMode支付方式)
      * @return 成功标识
      */
     @PutMapping("/{id}/pay")
     public Result<Void> payOrder(
             @RequestAttribute Long memberId,
-            @PathVariable Long id) {
-        orderService.payOrder(memberId, id, "微信支付");
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        String payMode = body.get("payMode");
+        orderService.payOrder(memberId, id, payMode);
         return Result.success();
     }
 

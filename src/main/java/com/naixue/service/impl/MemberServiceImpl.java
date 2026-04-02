@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -167,6 +168,7 @@ public class MemberServiceImpl implements MemberService {
         vo.setMemberOrigin(member.getMemberOrigin());
         vo.setExpenseAmount(member.getExpenseAmount());
         vo.setLevel(member.getMemberLevel());
+        vo.setCreatedAt(member.getCreatedAt() != null ? member.getCreatedAt().toEpochSecond(ZoneOffset.UTC) : null);
 
         return vo;
     }

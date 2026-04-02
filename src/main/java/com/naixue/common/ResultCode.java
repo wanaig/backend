@@ -49,6 +49,9 @@ public enum ResultCode {
     /** 积分不足 */
     POINTS_NOT_ENOUGH(3002, "积分不足"),
 
+    /** 余额不足 */
+    BALANCE_NOT_ENOUGH(3004, "余额不足"),
+
     /** 优惠券不可用 */
     COUPON_NOT_AVAILABLE(3003, "优惠券不可用"),
 

@@ -118,6 +118,7 @@ public class OrderServiceImpl implements OrderService {
         order.setPostscript(dto.getRemark());
         order.setPayMode("wechat");
         order.setSortNum("520");
+        order.setCreatedAt(LocalDateTime.now());
 
         // 保存订单
         orderMapper.insert(order);
@@ -199,8 +200,26 @@ public class OrderServiceImpl implements OrderService {
         if (order.getStatus() != 0) {
             throw new BusinessException(ResultCode.ORDER_STATUS_ERROR);
         }
+
+        // 余额支付
+        if ("余额支付".equals(payMode) || "balance".equals(payMode)) {
+            Member member = memberMapper.selectById(memberId);
+            if (member == null) {
+                throw new BusinessException(ResultCode.MEMBER_NOT_FOUND);
+            }
+            if (member.getBalance().compareTo(order.getAmount()) < 0) {
+                throw new BusinessException(ResultCode.BALANCE_NOT_ENOUGH);
+            }
+            int rows = memberMapper.decrementBalance(memberId, order.getAmount());
+            if (rows == 0) {
+                throw new BusinessException(ResultCode.BALANCE_NOT_ENOUGH);
+            }
+            log.info("【余额支付】memberId={}, orderId={}, amount={}, remainingBalance={}",
+                    memberId, orderId, order.getAmount(), member.getBalance().subtract(order.getAmount()));
+        }
+
         orderMapper.updatePayStatus(orderId, payMode);
-        log.info("支付订单: memberId={}, orderId={}", memberId, orderId);
+        log.info("支付订单: memberId={}, orderId={}, payMode={}", memberId, orderId, payMode);
     }
 
     /**
@@ -243,7 +262,7 @@ public class OrderServiceImpl implements OrderService {
         vo.setAmount(order.getAmount());
         vo.setGoodsNum(order.getGoodsNum());
         vo.setPayMode(order.getPayMode());
-        vo.setCreatedAt(order.getCreatedAt() != null ? order.getCreatedAt().toLocalDate().toEpochDay() * 86400 : 0);
+        vo.setCreatedAt(order.getCreatedAt() != null ? order.getCreatedAt().toEpochSecond(java.time.ZoneOffset.UTC) : 0);
         vo.setPayedAt(order.getPayedAt() != null ? order.getPayedAt().toLocalDate().toEpochDay() * 86400 : null);
         vo.setCompletedTime(order.getUpdatedAt() != null ? order.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) : null);
         vo.setPostscript(order.getPostscript());

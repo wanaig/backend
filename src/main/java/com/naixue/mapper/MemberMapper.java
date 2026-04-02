@@ -99,6 +99,18 @@ public interface MemberMapper {
     int incrementBalance(@Param("customerId") Long memberId, @Param("amount") BigDecimal amount);
 
     /**
+     * 扣减会员余额
+     *
+     * 使用SQL的原子操作确保并发安全
+     *
+     * @param customerId 会员ID
+     * @param amount 扣减的金额
+     * @return 影响行数
+     */
+    @Update("UPDATE member SET balance = balance - #{amount} WHERE customer_id = #{customerId} AND balance >= #{amount}")
+    int decrementBalance(@Param("customerId") Long memberId, @Param("amount") BigDecimal amount);
+
+    /**
      * 查询会员积分数量
      *
      * @param customerId 会员ID

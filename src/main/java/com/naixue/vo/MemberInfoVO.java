@@ -72,4 +72,7 @@ public class MemberInfoVO implements Serializable {
 
     /** 会员等级 (1-6) */
     private Integer level;
+
+    /** 创建时间 (时间戳秒) */
+    private Long createdAt;
 }
