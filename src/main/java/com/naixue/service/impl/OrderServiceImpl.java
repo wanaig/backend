@@ -80,6 +80,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Long createOrder(Long memberId, CreateOrderDTO dto) {
         // 校验门店
+        System.out.println(dto.getStoreId());
         Store store = storeMapper.selectById(dto.getStoreId());
         if (store == null) {
             throw new BusinessException(ResultCode.PARAM_ERROR);
