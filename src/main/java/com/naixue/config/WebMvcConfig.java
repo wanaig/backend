@@ -38,6 +38,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      *
      * 不需要认证的接口:
      * - /member/wxlogin (微信一键登录)
+     * - /member/douyinlogin (抖音一键登录)
      * - /member/login (登录)
      * - /store (门店)
      * - /goods (商品)
@@ -53,6 +54,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/member/wxlogin",
+                        "/member/douyinlogin",
+                        "/member/phonelogin",
                         "/member/login",
                         "/store",
                         "/goods",

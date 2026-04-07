@@ -41,6 +41,15 @@ public interface MemberMapper {
     Member selectById(@Param("customerId") Long customerId);
 
     /**
+     * 根据手机号查询会员
+     *
+     * @param mobilePhone 手机号
+     * @return 会员信息,未找到返回null
+     */
+    @Select("SELECT * FROM member WHERE mobile_phone = #{mobilePhone} LIMIT 1")
+    Member selectByPhone(@Param("mobilePhone") String mobilePhone);
+
+    /**
      * 新增会员信息
      *
      * 使用自增主键,会自动将生成的customerId回填到实体对象中
@@ -48,10 +57,10 @@ public interface MemberMapper {
      * @param member 会员信息
      * @return 影响行数
      */
-    @Insert("INSERT INTO member (openid, unionid, nickname, avatar, member_level, " +
+    @Insert("INSERT INTO member (openid, unionid, nickname, avatar, mobile_phone, member_level, " +
             "point_num, balance, gift_balance, current_value, member_origin, " +
             "last_login_time, created_at, updated_at) " +
-            "VALUES (#{openid}, #{unionid}, #{nickname}, #{avatar}, #{memberLevel}, " +
+            "VALUES (#{openid}, #{unionid}, #{nickname}, #{avatar}, #{mobilePhone}, #{memberLevel}, " +
             "#{pointNum}, #{balance}, #{giftBalance}, #{currentValue}, #{memberOrigin}, " +
             "#{lastLoginTime}, NOW(), NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "customerId")

@@ -53,6 +53,46 @@ public class MemberController {
     }
 
     /**
+     * 抖音一键登录注册
+     *
+     * POST /member/douyinlogin
+     *
+     * 一键登录流程:
+     * 1. 小程序调用 tt.login() 获取 code
+     * 2. POST /member/douyinlogin { code: "xxx" }
+     * 3. 后端自动用 code 换 openid → 查询/创建会员 → 返回 token
+     * 4. 小程序保存 token
+     *
+     * @param dto 登录参数 { code: "抖音code" }
+     * @return 登录结果 { token, customerId, nickname, avatar, isNewMember }
+     */
+    @PostMapping("/douyinlogin")
+    public Result<LoginVO> douyinLogin(@RequestBody LoginDTO dto) {
+        LoginVO vo = memberService.douyinLogin(dto);
+        return Result.success(vo);
+    }
+
+    /**
+     * 手机号登录/注册
+     *
+     * POST /member/phonelogin
+     *
+     * 登录流程:
+     * 1. 接收手机号参数
+     * 2. 查询数据库该手机号是否已注册
+     * 3. 已注册: 返回登录态(token + 用户信息)
+     * 4. 未注册: 自动创建新用户,返回登录态(token + 用户信息)
+     *
+     * @param dto 登录参数 { phone: "13812345678" }
+     * @return 登录结果 { token, customerId, nickname, avatar, isNewMember }
+     */
+    @PostMapping("/phonelogin")
+    public Result<LoginVO> phoneLogin(@RequestBody LoginDTO dto) {
+        LoginVO vo = memberService.phoneLogin(dto);
+        return Result.success(vo);
+    }
+
+    /**
      * 获取会员信息
      *
      * GET /member/info
